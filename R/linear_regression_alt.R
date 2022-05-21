@@ -117,24 +117,20 @@ mlr_gd <- function(dat, response) {
 mlr_qr <- function(dat, response) {
 
   x <- dat %>% select(-{{response}})
-  x <- as.matrix(x)
-  int <- as.matrix(rep(1, nrow(x)), ncol = 1)
-  x <- cbind(int, x)
-  y <- dat %>% select({{response}})
-  y <- as.matrix(y)
+  xm <- as.matrix(x)
+  xm <- cbind(1,xm)
+  y <- dat %>% pull({{response}})
+  ym <- as.matrix(y)
 
-  decomp <- qr(x)
+  decomp <- qr(xm)
 
-  ### Compute coefficients by QR decomposition
-  ### Return a data frame of the same form as in the `multiple_linear_regression`
+  Q <- qr.Q(decomp)
+  R <- qr.R(decomp)
 
-
-  #Edit
-  results <- solve(crossprod(x)) %*% (t(x) %*% y)
+  results <- solve(R) %*% t(Q) %*% ym
 
   results <- as.data.frame(t(results))
   names(results)[1] <- "Intercept"
 
   return(results)
-
 }
