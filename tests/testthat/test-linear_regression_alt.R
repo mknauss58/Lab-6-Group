@@ -26,7 +26,7 @@ test_that("multiple linear regression by gradient descent is correct", {
   mtcars2 <- mtcars %>%
     mutate_all(scale)
 
-  mass_result <- lm(mpg ~ hp, data = mtcars2)
+  mass_result <- lm(mpg ~ hp + cyl, data = mtcars2)
 
 
   expect_equal(coef(mass_result)[['hp']], my_result$hp,

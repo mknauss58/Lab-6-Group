@@ -86,7 +86,7 @@ mlr_gd <- function(dat, response) {
   y <- as.matrix(y)
 
   for (i in 1:numgd){
-    gradient <- (t(x) %*% (y - x %*% betas))
+    gradient <- (t(x) %*% (y - (x %*% betas)))
     betas <- betas - (learn * -2*gradient)
   }
 
