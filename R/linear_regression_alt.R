@@ -16,12 +16,14 @@ slr_gd <- function(dat, response, explanatory){
   beta_1 = 0
   beta_0 = 0
 
-  learn = 0.00001
-  numgd = 1000000
+  learn = 0.001
+  numgd = 10000
   n = nrow(dat)
 
   x <- dat %>% pull({{explanatory}})
+  x <- scale(x)
   y <- dat %>% pull({{response}})
+  y <- scale(y)
 
   explan_name <- dat %>%
     select({{explanatory}}) %>%
@@ -70,15 +72,17 @@ mlr_gd <- function(dat, response) {
   ### Return a data frame of the same form as in the `multiple_linear_regression`
   betas = matrix(0,ncol(dat))
 
-  learn = 0.000001
-  numgd = 2000000
+  learn = 0.001
+  numgd = 10000
   n = nrow(dat)
 
   x <- dat %>% select(-{{response}})
+  x <- scale(x)
   x <- as.matrix(x)
   int <- as.matrix(rep(1, nrow(x)), ncol = 1)
   x <- cbind(int, x)
   y <- dat %>% select({{response}})
+  y <- scale(y)
   y <- as.matrix(y)
 
   for (i in 1:numgd){
@@ -131,7 +135,6 @@ mlr_qr <- function(dat, response) {
   results <- as.data.frame(t(results))
   names(results)[1] <- "Intercept"
 
-  return(results)
   return(results)
 
 }
